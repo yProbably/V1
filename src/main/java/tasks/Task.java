@@ -1,6 +1,5 @@
 package tasks;
 
-import org.powbot.stream.locatable.interactive.PlayerStream;
 import org.powerbot.script.ClientAccessor;
 import org.powerbot.script.rt4.ClientContext;
 
@@ -10,7 +9,7 @@ public abstract class Task <C extends ClientContext> extends ClientAccessor<C> {
         super(ctx);
     }
 
-    public abstract PlayerStream activate();
+    public abstract boolean activate();
 
     public abstract void execute();
 }

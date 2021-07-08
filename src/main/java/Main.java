@@ -1,8 +1,9 @@
-import org.powbot.stream.locatable.interactive.PlayerStream;
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.Script;
 import org.powerbot.script.rt4.ClientContext;
-import org.powerbot.script.rt4.Players;
+import tasks.Drop;
+import tasks.Fish;
+import tasks.PlayerInArea;
 import tasks.Task;
 
 import java.util.ArrayList;
@@ -14,39 +15,29 @@ import java.util.List;
         version = "1.0.0")
 public class Main extends PollingScript<ClientContext> {
 
-    public List<Task> taskList = new ArrayList<>();
-    List<String> data = new ArrayList<String>();
+    private List<Task> taskList = new ArrayList<>();
 
     @Override
     public void start() {
-        Players players = ctx.players;
-
-        System.out.println(getName() + " is starting");
-        if(ctx.players.toStream().within(20).count() > 1){
-            ctx.game.logout();
-        }
-        /*
-        data.add(ctx.players.toStream().any().name());
-        String[] strObjects = data.toArray(new String[0]);
-        for(String obj: strObjects) {
-            System.out.println(obj);
-        }
-        */
-
-        if(ctx.players.toStream().within(10).count() < 1){
-            System.out.println("No players");
-            super.stop();
-        }
+        ctx.properties.setProperty("randomevents.disable", "true");
+        ctx.properties.setProperty("singletap.disble", "true");
+        taskList.add(new Drop(ctx));
+        taskList.add(new Fish(ctx));
+        //taskList.add(new PlayerInArea(ctx));
     }
 
     @Override
     public void poll() {
-
+        for (Task t : taskList) {
+            if (t.activate()) {
+                t.execute();
+                break;
+            }
+        }
     }
 
     @Override
     public void stop() {
-        System.out.println(getName() + " is stopping");
         super.stop();
     }
 }
