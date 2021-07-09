@@ -21,7 +21,8 @@ public class Fish extends Task<ClientContext>{
         return ctx.inventory.toStream().name("Small fishing net").count() > 0
                 && ctx.players.local().animation() == -1
                 && (ctx.players.local().interacting() != null)
-                && (ctx.inventory.toStream().count() < 28);
+                && (ctx.inventory.toStream().count() < 28)
+                && ctx.npcs.toStream().id(fishingSpotId).nearest().first().inViewport();
     }
 
     @Override

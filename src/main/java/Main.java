@@ -1,10 +1,7 @@
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.Script;
 import org.powerbot.script.rt4.ClientContext;
-import tasks.Drop;
-import tasks.Fish;
-import tasks.PlayerInArea;
-import tasks.Task;
+import tasks.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,10 +16,10 @@ public class Main extends PollingScript<ClientContext> {
 
     @Override
     public void start() {
-        ctx.properties.setProperty("randomevents.disable", "true");
-        ctx.properties.setProperty("singletap.disble", "true");
+        ctx.properties.setProperty("randomevents.disable", "false");
         taskList.add(new Drop(ctx));
         taskList.add(new Fish(ctx));
+        taskList.add(new Tree(ctx));
         //taskList.add(new PlayerInArea(ctx));
     }
 
