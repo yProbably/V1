@@ -1,6 +1,7 @@
 import org.powerbot.script.PollingScript;
 import org.powerbot.script.Script;
 import org.powerbot.script.rt4.ClientContext;
+
 import tasks.*;
 
 import java.util.ArrayList;
@@ -12,15 +13,20 @@ import java.util.List;
         version = "1.0.0")
 public class Main extends PollingScript<ClientContext> {
 
-    private List<Task> taskList = new ArrayList<>();
+    private final List<Task> taskList = new ArrayList<>();
 
     @Override
     public void start() {
-        ctx.properties.setProperty("randomevents.disable", "false");
+
+        ctx.properties.setProperty("randomevents.disable", "true");
+
+        //taskList.add(new HelloTensorFlow(ctx));
         taskList.add(new Drop(ctx));
+        taskList.add(new WalkToChickenArea(ctx));
         taskList.add(new Fish(ctx));
         taskList.add(new Tree(ctx));
         //taskList.add(new PlayerInArea(ctx));
+
     }
 
     @Override

@@ -16,7 +16,8 @@ public class Drop extends Task<ClientContext> {
 
     @Override
     public boolean activate() {
-        return ctx.inventory.toStream().count() > 27 && ctx.players.local().animation() == -1;
+        return ctx.inventory.toStream().count() > 27 && ctx.players.local().animation() == -1
+                || ctx.inventory.isFull();
     }
 
     @Override

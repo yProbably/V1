@@ -15,7 +15,10 @@ public class Tree extends Task<ClientContext> {
 
     @Override
     public boolean activate() {
-        return ctx.objects.toStream().within(20).name(treeToCut).nearest().first().valid()
+        return ctx.inventory.toStream().name("Bronze axe").count() > 0
+                && ctx.objects.toStream().within(20).name(treeToCut).nearest().first().inViewport()
+                && ctx.players.local().animation() == -1
+                && (ctx.players.local().interacting() != null)
                 && ctx.inventory.toStream().count() < 28;
     }
 
@@ -26,37 +29,25 @@ public class Tree extends Task<ClientContext> {
 
             if(ctx.skills.level(SKILLS_WOODCUTTING) < 15 && ctx.objects.toStream().name(treeToCut[0]).nearest().first().valid()){
                 ctx.objects.toStream().name(treeToCut[0]).nearest().first().interact("Chop down");
-                System.out.println("Chop chop chop");
 
                 if(Condition.wait(() -> ctx.players.local().animation()!= -1 && !ctx.players.local().inMotion(), Random.nextGaussian(115, 250, 500), 3)){
-                    System.out.println("Waiting");
                     Condition.wait(() -> !ctx.objects.toStream().at(ctx.objects.toStream().name(treeToCut[0]).nearest().first().tile()).name(treeToCut[0]).isEmpty() || ctx.inventory.toStream().count() == 28, Random.nextGaussian(115, 250, 500), 3);
-                    System.out.println("Not waiting");
                 }
             }
 
             if((ctx.skills.level(SKILLS_WOODCUTTING) >= 15 && ctx.skills.level(SKILLS_WOODCUTTING) < 30) && ctx.objects.toStream().name(treeToCut[1]).nearest().first().valid()){
                 ctx.objects.toStream().name(treeToCut[1]).nearest().first().interact("Chop down");
-                System.out.println("Chop chop chop");
 
                 if(Condition.wait(() -> ctx.players.local().animation()!= -1 && !ctx.players.local().inMotion(), Random.nextGaussian(115, 250, 500), 3)){
-                    System.out.println("Waiting");
                     Condition.wait(() -> !ctx.objects.toStream().at(ctx.objects.toStream().name(treeToCut[1]).nearest().first().tile()).name(treeToCut[1]).isEmpty() || ctx.inventory.toStream().count() == 28, Random.nextGaussian(115, 250, 500), 3);
-                    System.out.println("Not waiting");
                 }
             }
 
             if((ctx.skills.level(SKILLS_WOODCUTTING) >= 30 && ctx.skills.level(SKILLS_WOODCUTTING) < 60) && ctx.objects.toStream().name(treeToCut[2]).nearest().first().valid()){
                 ctx.objects.toStream().name(treeToCut[2]).nearest().first().interact("Chop down");
-                System.out.println("Chop chop chop");
 
                 if(Condition.wait(() -> ctx.players.local().animation()!= -1 && !ctx.players.local().inMotion(), Random.nextGaussian(115, 250, 500), 3)){
-                    System.out.println("Waiting");
                     Condition.wait(() -> !ctx.objects.toStream().at(ctx.objects.toStream().name(treeToCut[2]).nearest().first().tile()).name(treeToCut[2]).isEmpty() || ctx.inventory.toStream().count() == 28, Random.nextGaussian(115, 250, 500), 3);
-                    System.out.println("Test; " + Condition.wait(() -> !ctx.objects.toStream().at(ctx.objects.toStream().name(treeToCut[2]).nearest().first().tile()).name(treeToCut[2]).isEmpty(), Random.nextGaussian(115, 250, 500), 3));
-                    System.out.println("Not waiting");
-                    System.out.println("Test; " + Condition.wait(() -> !ctx.objects.toStream().at(ctx.objects.toStream().name(treeToCut[2]).nearest().first().tile()).name(treeToCut[2]).isEmpty(), Random.nextGaussian(115, 250, 500), 3));
-
                 }
             }
         }
