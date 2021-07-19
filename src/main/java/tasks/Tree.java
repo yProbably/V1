@@ -1,13 +1,17 @@
 package tasks;
 
+import Area.ChickenArea;
 import org.powerbot.script.Condition;
 import org.powerbot.script.Random;
 import org.powerbot.script.rt4.ClientContext;
+import org.powerbot.script.rt4.Player;
 
 import static org.powerbot.script.rt4.Constants.*;
 
 public class Tree extends Task<ClientContext> {
     public final static String[] treeToCut = { "Tree", "Oak", "Willow", "Maple", "Yew" };
+    ChickenArea chickenArea = new ChickenArea(ctx);
+    Player localPlayer;
 
     public Tree(ClientContext ctx) {
         super(ctx);
@@ -18,8 +22,9 @@ public class Tree extends Task<ClientContext> {
         return ctx.inventory.toStream().name("Bronze axe").count() > 0
                 && ctx.objects.toStream().within(20).name(treeToCut).nearest().first().inViewport()
                 && ctx.players.local().animation() == -1
-                && (ctx.players.local().interacting() != null)
-                && ctx.inventory.toStream().count() < 28;
+                && (!ctx.players.local().interacting().valid())
+                && ctx.inventory.toStream().count() < 28
+                && !chickenArea.playerInChickenArea(localPlayer);
     }
 
     @Override
