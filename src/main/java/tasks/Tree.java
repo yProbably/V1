@@ -24,7 +24,7 @@ public class Tree extends Task<ClientContext> {
                 && ctx.players.local().animation() == -1
                 && (!ctx.players.local().interacting().valid())
                 && ctx.inventory.toStream().count() < 28
-                && !chickenArea.playerInChickenArea(localPlayer);
+                && !chickenArea.playerInChickenArea();
     }
 
     @Override

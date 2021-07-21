@@ -3,12 +3,8 @@ package tasks;
 import Area.ChickenArea;
 import org.powerbot.script.Condition;
 import org.powerbot.script.rt4.ClientContext;
-import org.powerbot.script.rt4.Npc;
-import org.powerbot.script.rt4.Player;
 
 public class ChickenKiller extends Task<ClientContext> {
-    Npc chicken = ctx.npcs.toStream().name("Chicken").nearest().first();
-    Player localPlayer;
     ChickenArea chickenArea = new ChickenArea(ctx);
 
     public ChickenKiller(ClientContext ctx) {
@@ -17,19 +13,18 @@ public class ChickenKiller extends Task<ClientContext> {
 
     @Override
     public boolean activate() {
-        return chickenArea.playerInChickenArea(localPlayer)
+        return chickenArea.playerInChickenArea()
                 && ctx.players.local().animation() == -1
-                && !ctx.players.local().interacting().valid();
+                && !ctx.npcs.toStream().name("Cow").first().interacting().equals(ctx.players.local());
     }
 
     @Override
     public void execute() {
-        if(chickenArea.chickenOutsideArea(chicken)) {
-            // TODO
-            System.out.println("Ignoring chicken outside");
-        }
-        else if(chickenArea.chickenInArea(chicken) && chicken.valid()){
-            chicken.interact("Attack");
+        if(!ctx.players.local().inMotion() && ctx.npcs.toStream().nearest().name("Cow").first().valid()){
+            if(chickenArea.chickenInArea() && ctx.npcs.toStream().nearest().name("Cow").first().animation() == -1 && !ctx.npcs.toStream().nearest().name("Cow").first().interacting().equals(ctx.players.local())){
+                ctx.npcs.toStream().nearest().name("Cow").first().interact("Attack");
+                Condition.wait(() -> ctx.npcs.toStream().nearest().name("Cow").first().interacting().equals(ctx.players.local()), 150, 10);
+            }
         }
     }
 }

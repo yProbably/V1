@@ -13,7 +13,7 @@ public class WalkToChickenArea extends Task<ClientContext> {
 
     @Override
     public boolean activate() {
-        return !chickenArea.playerInChickenArea(localPlayer) && ctx.players.local().animation() == -1;
+        return !chickenArea.playerInChickenArea() && ctx.players.local().animation() == -1;
     }
 
     @Override
